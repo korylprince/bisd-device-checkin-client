@@ -8,6 +8,7 @@ var devConfig = {
     devtool: "#cheap-module-inline-source-map",
     plugins: [
         new webpack.EnvironmentPlugin({
+            NODE_ENV: "development",
             DEBUG: true
         })
     ]

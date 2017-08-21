@@ -4,9 +4,9 @@
   "description": "Chromebook check-in portal",
   "main": "dist/app.js",
   "scripts": {
-    "dev": "NODE_ENV='development' ./node_modules/webpack/bin/webpack.js --watch --progress --config build/webpack.dev.babel.js",
-    "build": "NODE_ENV='development' ./node_modules/webpack/bin/webpack.js --progress --config build/webpack.dev.babel.js",
-    "build-prod": "NODE_ENV='production' ./node_modules/webpack/bin/webpack.js --progress --config build/webpack.prod.babel.js",
+    "dev": "./node_modules/webpack/bin/webpack.js --watch --progress --config build/webpack.dev.babel.js",
+    "build": "./node_modules/webpack/bin/webpack.js --progress --config build/webpack.dev.babel.js",
+    "build-prod": "./node_modules/webpack/bin/webpack.js --progress --config build/webpack.prod.babel.js",
     "lint": "./node_modules/eslint/bin/eslint.js  --fix --ignore-pattern !.eslintrc.js *.js .*.js build/*.js src/*.js src/js/*.js src/components/*.vue"
   },
   "keywords": [

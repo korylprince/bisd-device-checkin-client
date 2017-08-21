@@ -18,6 +18,7 @@ var prodConfig = {
             assetNameRegExp: /\.(css|styl)$/g
         }),
         new webpack.EnvironmentPlugin({
+            NODE_ENV: "production",
             DEBUG: false
         })
 
