@@ -11,7 +11,10 @@ WORKDIR /client
 
 RUN npm install
 
-RUN API_BASE="/checkin/api/1.0" npm run build-prod
+ENV API_BASE="/checkin/api/1.0"
+ENV CHARGE_BASE="/charges/edit?type=id&search="
+
+RUN npm run build-prod
 
 FROM alpine:3.7
 
@@ -24,4 +27,3 @@ WORKDIR /www
 RUN echo ":8080" > /Caddyfile && echo "log /dev/stdout" >> /Caddyfile
 
 CMD ["caddy", "-conf", "/Caddyfile"]
-

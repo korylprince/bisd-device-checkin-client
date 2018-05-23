@@ -9,6 +9,7 @@ var cssExtractPlugin = new ExtractTextPlugin("style/[name].css");
 var root = path.resolve(__dirname, "../");
 
 var API_BASE = process.env.API_BASE ? process.env.API_BASE : "http://localhost/api/1.0";
+var CHARGE_BASE = process.env.CHARGE_BASE ? process.env.CHARGE_BASE : "/charges/edit?type=id&search=";
 
 export default {
     entry: {
