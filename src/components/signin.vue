@@ -20,42 +20,42 @@
 </template>
 
 <script>
-import api from "../js/api.js";
-import auth from "../js/auth.js";
+import api from "../js/api.js"
+import auth from "../js/auth.js"
 export default {
     name: "signin",
     data: function() {
         return {
             username: null,
             password: null,
-            error_text: null
-        };
+            error_text: null,
+        }
     },
     methods: {
         authenticate: function(username, password) {
-            this.error_text = null;
-            this.$refs.signin.$el.focus();
+            this.error_text = null
+            this.$refs.signin.$el.focus()
 
             if (!username || !password) {
-                this.error_text = "You must enter a username or password";
-                return;
+                this.error_text = "You must enter a username or password"
+                return
             }
 
-            var promise = api.authenticate(username, password);
+            const promise = api.authenticate(username, password)
 
-            promise.then((response) => {
-                auth.update(response.data.session_key, response.data.user);
-            }).catch((error) => {
+            promise.then(response => {
+                auth.update(response.data.session_key, response.data.user)
+            }).catch(error => {
                 if (error.response && error.response.status === 401) {
-                    this.error_text = "Bad username or password";
+                    this.error_text = "Bad username or password"
                 } else {
-                    this.error_text = "Unknown error occurred";
-                    console.error(error);
+                    this.error_text = "Unknown error occurred"
+                    console.error(error)
                 }
-            });
-        }
-    }
-};
+            })
+        },
+    },
+}
 </script>
 <style lang="stylus">
 .signin

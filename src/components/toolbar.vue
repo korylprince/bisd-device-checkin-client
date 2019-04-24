@@ -27,71 +27,71 @@
         </v-toolbar>
 </template>
 <script>
-import auth from "../js/auth.js";
-import api from "../js/api.js";
-import bus from "../js/bus.js";
+import auth from "../js/auth.js"
+import api from "../js/api.js"
+import bus from "../js/bus.js"
 export default {
     name: "toolbar",
     data: function() {
         return {
             search: null,
-            loading: false
-        };
+            loading: false,
+        }
     },
     computed: {
         name: function() {
             if (auth.user) {
-                return auth.user.display_name;
+                return auth.user.display_name
             }
-            return null;
-        }
+            return null
+        },
     },
     methods: {
         signout: function() {
-            auth.clear();
+            auth.clear()
         },
         doSearch: function(query) {
             if (query.length === 4) {
-                this.loading = true;
-                var promise = api.readDevice(query);
+                this.loading = true
+                const promise = api.readDevice(query)
 
-                promise.then((response) => {
-                    this.loading = false;
+                promise.then(response => {
+                    this.loading = false
                     if (response.data.status !== "Checked Out") {
-                        bus.$emit("api-error", "Chromebook already checked in");
+                        bus.$emit("api-error", "Chromebook already checked in")
                     } else {
-                        bus.$emit("search", response.data);
+                        bus.$emit("search", response.data)
                     }
-                }).catch((error) => {
-                    this.loading = false;
+                }).catch(error => {
+                    this.loading = false
                     if (error.response) {
                         if (error.response.status === 401) {
-                            return;
+                            return
                         }
                         if (error.response.status === 404) {
-                            bus.$emit("search-not-found");
-                            return;
+                            bus.$emit("search-not-found")
+                            return
                         }
-                        console.error(error);
-                        bus.$emit("api-error", error.response.statusText);
+                        console.error(error)
+                        bus.$emit("api-error", error.response.statusText)
                     } else if (error.request) {
-                        console.error(error);
-                        bus.$emit("api-error", error.request);
+                        console.error(error)
+                        bus.$emit("api-error", error.request)
                     } else {
-                        console.error(error);
-                        bus.$emit("api-error", error.message);
+                        console.error(error)
+                        bus.$emit("api-error", error.message)
                     }
-                });
+                })
             }
         },
         select: function() {
-            this.$refs.search.$refs.input.select();
-        }
+            this.$refs.search.$refs.input.select()
+        },
     },
     created: function() {
-        this.$watch("search", this.doSearch);
-    }
-};
+        this.$watch("search", this.doSearch)
+    },
+}
 </script>
 <style lang="stylus">
 .toolbar

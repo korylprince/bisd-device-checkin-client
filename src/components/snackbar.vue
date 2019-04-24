@@ -4,23 +4,23 @@
     </v-snackbar>
 </template>
 <script>
-import bus from "../js/bus.js";
+import bus from "../js/bus.js"
 export default {
     name: "snackbar",
     data: function() {
         return {
-            snackbar: false
-        };
+            snackbar: false,
+        }
     },
     methods: {
         trigger: function() {
-            this.snackbar = true;
-        }
+            this.snackbar = true
+        },
     },
     created: function() {
         bus.$on("saved", () => {
-            this.trigger();
-        });
-    }
-};
+            this.trigger()
+        })
+    },
+}
 </script>

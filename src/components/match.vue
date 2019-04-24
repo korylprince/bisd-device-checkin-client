@@ -44,27 +44,27 @@ export default {
     props: ["device"],
     data: function() {
         return {
-            dialogActive: false
-        };
+            dialogActive: false,
+        }
     },
     methods: {
         openDialog: function() {
-            this.dialogActive = true;
+            this.dialogActive = true
         },
         closeDialog: function() {
-            this.dialogActive = false;
-            this.$router.push({name: "search"});
+            this.dialogActive = false
+            this.$router.push({name: "search"})
         },
         match: function(device) {
-            this.$router.push({name: "inspect", params: {id: device.bag_tag, device: device}});
-        }
+            this.$router.push({name: "inspect", params: {id: device.bag_tag, device: device}})
+        },
     },
     created: function() {
         if (!this.device) {
-            this.$router.push({name: "search"});
+            this.$router.push({name: "search"})
         }
-    }
-};
+    },
+}
 </script>
 <style lang="stylus">
 .match

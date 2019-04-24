@@ -5,8 +5,8 @@
 </template>
 <script>
 export default {
-    name: "search"
-};
+    name: "search",
+}
 </script>
 <style lang="stylus">
 .missing

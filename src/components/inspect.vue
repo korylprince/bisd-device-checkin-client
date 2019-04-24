@@ -34,9 +34,9 @@
 </template>
 
 <script>
-/*global CHARGE_BASE*/
-import api from "../js/api.js";
-import bus from "../js/bus.js";
+/* global CHARGE_BASE*/
+import api from "../js/api.js"
+import bus from "../js/bus.js"
 export default {
     name: "inspect",
     props: ["device"],
@@ -50,92 +50,94 @@ export default {
                 {description: "Powerbrick damaged/missing", value: 15.00, active: false},
                 {description: "Bag damaged/missing", value: 35.00, active: false},
                 {description: "Key(s) missing", value: 0.00, active: false},
-                {description: "Chromebook not charging", value: 0.00, active: false}
+                {description: "Chromebook not charging", value: 0.00, active: false},
             ],
             other: {
                 description: "",
-                value: ""
-            }
-        };
+                value: "",
+            },
+        }
     },
     computed: {
         total: function() {
-            var t = 0.00;
-            var groups = {};
-            for (var i = 0; i < this.charges.length; i++) {
+            let t = 0.00
+            const groups = {}
+            for (let i = 0; i < this.charges.length; i++) {
                 if (this.charges[i].active) {
                     if (this.charges[i].group == null) {
-                        t += this.charges[i].value;
+                        t += this.charges[i].value
                         // use groups to group similar charges into one price
                     } else {
                         if (!(this.charges[i].group in groups)) {
-                            t += this.charges[i].value;
-                            groups[this.charges[i].group] = true;
+                            t += this.charges[i].value
+                            groups[this.charges[i].group] = true
                         }
                     }
                 }
             }
-            return t;
-        }
+            return t
+        },
     },
     methods: {
         addCharge: function(description, value) {
-            this.charges.push({"description": description, "value": value, "active": true});
-            this.other.description = "";
-            this.other.value = "";
+            this.charges.push({"description": description, "value": value, "active": true})
+            this.other.description = ""
+            this.other.value = ""
         },
         submit: function(charges) {
-            var newCharges = [];
-            var groups = {};
-            for (var i = 0; i < charges.length; i++) {
+            const newCharges = []
+            const groups = {}
+            for (let i = 0; i < charges.length; i++) {
                 if (!charges[i].active) {
-                    continue;
+                    continue
                 }
                 if (charges[i].group == null) {
-                    newCharges.push({description: charges[i].description, value: charges[i].value});
-                    continue;
+                    newCharges.push({description: charges[i].description, value: charges[i].value})
+                    continue
                 }
                 if (groups[charges[i].group] == null) {
-                    groups[charges[i].group] = {description: charges[i].description, value: charges[i].value};
+                    groups[charges[i].group] = {description: charges[i].description, value: charges[i].value}
                 } else {
-                    groups[charges[i].group].description += ", " + charges[i].description;
+                    groups[charges[i].group].description += ", " + charges[i].description
                 }
             }
-            for (var key in groups) {
-                newCharges.push(groups[key]);
+            for (const key in groups) {
+                if (Object.prototype.hasOwnProperty.call(groups, key)) {
+                    newCharges.push(groups[key])
+                }
             }
 
-            var promise = api.checkinDevice(this.device.bag_tag, newCharges);
+            const promise = api.checkinDevice(this.device.bag_tag, newCharges)
 
-            promise.then((response) => {
+            promise.then(response => {
                 if (response.data.charge_id) {
-                    window.open(CHARGE_BASE + response.data.charge_id, "_blank");
+                    window.open(CHARGE_BASE + response.data.charge_id, "_blank")
                 }
-                this.$router.push({name: "search"});
-                bus.$emit("saved");
-            }).catch((error) => {
+                this.$router.push({name: "search"})
+                bus.$emit("saved")
+            }).catch(error => {
                 if (error.response) {
                     if (error.response.status === 401) {
-                        return;
+                        return
                     }
-                    console.error(error);
-                    bus.$emit("api-error", error.response.statusText);
+                    console.error(error)
+                    bus.$emit("api-error", error.response.statusText)
                 } else if (error.request) {
-                    console.error(error);
-                    bus.$emit("api-error", error.request);
+                    console.error(error)
+                    bus.$emit("api-error", error.request)
                 } else {
-                    console.error(error);
-                    bus.$emit("api-error", error.message);
+                    console.error(error)
+                    bus.$emit("api-error", error.message)
                 }
-            });
-        }
+            })
+        },
     },
     created: function() {
         if (!this.device) {
-            this.$router.push({name: "search"});
+            this.$router.push({name: "search"})
         }
-    }
-};
+    },
+}
 </script>
 <style lang="stylus">
 .inspect

@@ -5,8 +5,8 @@
 </template>
 <script>
 export default {
-    name: "not-found"
-};
+    name: "not-found",
+}
 </script>
 <style lang="stylus">
 .not-found
