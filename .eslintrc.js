@@ -1,25 +1,38 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "es6": true
+    env: {
+        browser: true,
+        es6: true,
+        node: true,
     },
-    "extends": "vue",
-    "parserOptions": {
-        "sourceType": "module"
+    extends: [
+        "plugin:vue/essential",
+        "eslint:recommended",
+        "google",
+    ],
+    parserOptions: {
+        parser: "babel-eslint",
+        sourceType: "module",
     },
-    "rules": {
-        "indent": ["error", 4],
+    rules: {
+        "arrow-body-style": ["error", "as-needed"],
+        "arrow-parens": ["error", "as-needed"],
+        "camelcase": "off",
+        "indent": ["error", 4, {"SwitchCase": 1}],
+        "require-jsdoc": "off",
         "linebreak-style": ["error", "unix"],
-        "quotes": ["error", "double"],
-        "semi": ["error", "always"],
+        "max-len": "off",
+        "new-cap": "off",
         "no-console": ["error", {allow: ["error"]}],
-        "camelcase": 0,
-        "space-before-function-paren": ["error", "never"],
         "object-curly-spacing": ["error", "never"],
-        "arrow-parens": ["error", "always"],
-        "arrow-body-style": ["error", "always"]
+        "promise/always-return": "off",
+        "promise/no-return-wrap": ["error", {allowReject: true}],
+        "quotes": ["error", "double"],
+        "semi": ["error", "never"],
+        "space-before-function-paren": ["error", "never"],
     },
-    "plugins": [
-        "html"
-    ]
-};
+    plugins: [
+        "html",
+        "promise",
+        "vue",
+    ],
+}

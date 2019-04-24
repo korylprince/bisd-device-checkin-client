@@ -1,28 +1,61 @@
-import webpack from "webpack";
-import OptimizeJsPlugin from "optimize-js-plugin";
-import OptimizeCssAssetsPlugin from "optimize-css-assets-webpack-plugin";
-import merge from "webpack-merge";
+import CleanWebpackPlugin from "clean-webpack-plugin"
+import UglifyJsPlugin from "uglifyjs-webpack-plugin"
+import MiniCssExtractPlugin from "mini-css-extract-plugin"
+import OptimizeCssAssetsPlugin from "optimize-css-assets-webpack-plugin"
+import merge from "webpack-merge"
 
-import baseConfig from "./webpack.base.babel.js";
+import {baseConfig, postcssLoader} from "./webpack.base.babel.js"
 
-var prodConfig = {
+const prodConfig = {
+    mode: "production",
+    optimization: {
+        minimizer: [
+            new CleanWebpackPlugin(),
+            new UglifyJsPlugin({
+                cache: true,
+                parallel: true,
+                sourceMap: false,
+            }),
+            new OptimizeCssAssetsPlugin({
+                assetNameRegExp: /\.(css|styl(us)?|s[ac]ss)$/g,
+            }),
+        ],
+    },
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {loader: "css-loader", options: {importLoaders: 1, sourceMap: true}},
+                    postcssLoader,
+                ],
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {loader: "css-loader", options: {importLoaders: 2, sourceMap: true}},
+                    postcssLoader,
+                    {loader: "sass-loader", options: {sourceMap: true}},
+                ],
+            },
+            {
+                test: /\.styl(us)?$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {loader: "css-loader", options: {importLoaders: 2, sourceMap: true}},
+                    postcssLoader,
+                    {loader: "stylus-loader", options: {sourceMap: true}},
+                ],
+            },
+        ],
+    },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({
-            minimize: true,
-            comments: false
+        new MiniCssExtractPlugin({
+            filename: "style/[name].css",
         }),
-        new OptimizeJsPlugin({
-            sourceMap: false
-        }),
-        new OptimizeCssAssetsPlugin({
-            assetNameRegExp: /\.(css|styl)$/g
-        }),
-        new webpack.EnvironmentPlugin({
-            NODE_ENV: "production",
-            DEBUG: false
-        })
+    ],
+}
 
-    ]
-};
-
-export default merge(baseConfig, prodConfig);
+export default merge(baseConfig, prodConfig)
