@@ -1,29 +1,20 @@
 /* global API_BASE */
 
-import axios from "axios"
+import store from "./store.js"
 
-import auth from "./auth.js"
-
-export default {
-    handlePromise: function(promise) {
-        promise.catch(function(error) {
-            if (error.response && error.response.status === 401) {
-                auth.clear()
-            }
-        })
-    },
+const api = {
     authenticate: function(username, password) {
-        const promise = axios.post(API_BASE + "/auth", {"username": username, "password": password}, auth.config())
-        return promise
+        return store.getters.$http.post(API_BASE + "/auth", {username, password})
     },
-    readDevice: function(bagTag) {
-        const promise = axios.get(API_BASE + "/devices/" + bagTag, auth.config())
-        this.handlePromise(promise)
-        return promise
+    ping: function() {
+        return store.getters.$http.post(API_BASE + "/auth/ping")
     },
-    checkinDevice: function(bagTag, charges) {
-        const promise = axios.post(API_BASE + "/devices/" + bagTag + "/checkin", {charges: charges}, auth.config())
-        this.handlePromise(promise)
-        return promise
+    readDevice: function(bag_tag) {
+        return store.getters.$http.get(API_BASE + "/devices/" + bag_tag)
+    },
+    checkinDevice: function(bag_tag, charges, missing, notes) {
+        return store.getters.$http.post(API_BASE + "/devices/" + bag_tag + "/checkin", {charges, missing, notes})
     },
 }
+
+export default api

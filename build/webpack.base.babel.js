@@ -7,7 +7,8 @@ import autoprefixer from "autoprefixer"
 
 const root = path.resolve(__dirname, "../")
 
-const API_BASE = process.env.API_BASE ? process.env.API_BASE : "http://localhost/api/1.0"
+const API_BASE = process.env.API_BASE ? process.env.API_BASE : "/checkin/api/2.0"
+const CHARGE_BASE = process.env.CHARGE_BASE ? process.env.CHARGE_BASE : "/charges/edit?type=id&search="
 
 const postcssLoader = {
     loader: "postcss-loader",
@@ -50,6 +51,7 @@ const baseConfig = {
     plugins: [
         new webpack.DefinePlugin({
             API_BASE: JSON.stringify(API_BASE),
+            CHARGE_BASE: JSON.stringify(CHARGE_BASE),
         }),
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({

@@ -1,4 +1,4 @@
-FROM alpine:3.7 as builder
+FROM alpine:3.9 as builder
 
 ARG VERSION
 
@@ -11,12 +11,12 @@ WORKDIR /client
 
 RUN npm install
 
-ENV API_BASE="/checkin/api/1.0"
+ENV API_BASE="/checkin/api/2.0"
 ENV CHARGE_BASE="/charges/edit?type=id&search="
 
 RUN npm run build-prod
 
-FROM alpine:3.7
+FROM alpine:3.9
 
 RUN apk add --no-cache caddy
 

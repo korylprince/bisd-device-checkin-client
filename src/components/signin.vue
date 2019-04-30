@@ -1,64 +1,90 @@
 <template>
-    <v-card class="signin">
-        <v-card-row>
-            <v-card-title>
-                <h4>Sign in</h4>
+    <v-card width="100%" max-width="480px">
+        <v-card-title primary-title>
+            <div class="headline">Sign In</div>
+        </v-card-title>
+
+        <form novalidate @submit.prevent="do_authenticate(username, password)">
+            <v-card-text>
+                <v-text-field
+                    label="Username"
+                    v-model="username"
+                    v-validate="'required'"
+                    :error-messages="errors.collect('username')"
+                    data-vv-name="username"
+                    required>
+                </v-text-field>
+
+                <v-text-field
+                    :type="show_password ? 'text' : 'password'"
+                    :append-icon="show_password ? 'visibility_off' : 'visibility'"
+                    @click:append="show_password = !show_password"
+                    label="Password"
+                    v-model="password"
+                    v-validate="'required'"
+                    :error-messages="errors.collect('password')"
+                    data-vv-name="password"
+                    required>
+                </v-text-field>
+
+                <span class="error--text" v-if="error">{{error}}</span>
+            </v-card-text>
+
+            <v-card-actions>
                 <v-spacer></v-spacer>
-            </v-card-title>
-        </v-card-row>
-        <v-card-text>
-            <form novalidate @keyup.enter="authenticate(username, password)">
-                <v-text-field label="Username" v-model="username" required></v-text-field>
-                <v-text-field label="Password" type="password" v-model="password" required></v-text-field>
-            </form>
-            <div class="error--text" v-if="error_text">{{error_text}}</div>
-        </v-card-text>
-        <v-card-row actions>
-            <v-btn ref="signin" class="secondary" @click.native="authenticate(username, password)">Sign in</v-btn>
-        </v-card-row>
+                <v-btn type="submit"
+                       color="accent"
+                       flat
+                       :loading="is_loading"
+                       :disabled="username === '' || password === ''"
+                       >Sign In</v-btn>
+            </v-card-actions>
+        </form>
+
     </v-card>
 </template>
 
 <script>
-import api from "../js/api.js"
-import auth from "../js/auth.js"
+import {mapState, mapMutations, mapGetters, mapActions} from "vuex"
+import store from "../js/store.js"
 export default {
-    name: "signin",
-    data: function() {
+    name: "app-signin",
+    computed: {
+        ...mapState({"error": "last_error"}),
+        ...mapGetters(["is_loading"]),
+    },
+    data() {
         return {
-            username: null,
-            password: null,
-            error_text: null,
+            username: "",
+            password: "",
+            show_password: false,
         }
     },
     methods: {
-        authenticate: function(username, password) {
-            this.error_text = null
-            this.$refs.signin.$el.focus()
-
-            if (!username || !password) {
-                this.error_text = "You must enter a username or password"
+        ...mapMutations(["UPDATE_ERROR"]),
+        ...mapActions(["authenticate"]),
+        async do_authenticate(username, password) {
+            if (this.is_loading) {
                 return
             }
 
-            const promise = api.authenticate(username, password)
-
-            promise.then(response => {
-                auth.update(response.data.session_key, response.data.user)
-            }).catch(error => {
-                if (error.response && error.response.status === 401) {
-                    this.error_text = "Bad username or password"
-                } else {
-                    this.error_text = "Unknown error occurred"
-                    console.error(error)
+            try {
+                if (!(await this.$validator.validateAll())) {
+                    return
                 }
-            })
+            } catch (err) {
+                this.UPDATE_ERROR("Form validation error")
+            }
+
+            this.authenticate({username, password})
         },
+    },
+    beforeRouteEnter(to, from, next) {
+        if (store.getters.signed_in) {
+            next({name: "search"})
+            return
+        }
+        next()
     },
 }
 </script>
-<style lang="stylus">
-.signin
-    max-width: 600px
-    margin: 100px auto auto auto
-</style>
