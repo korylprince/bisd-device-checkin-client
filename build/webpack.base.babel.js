@@ -59,7 +59,9 @@ const baseConfig = {
         }),
         new WebappWebpackPlugin({
             logo: path.resolve(root, "src/img/favicon.png"),
-            prefix: "icons/",
+            outputPath: "icons/",
+            publicPath: "/checkin/icons/",
+            prefix: "",
         }),
     ],
 }
