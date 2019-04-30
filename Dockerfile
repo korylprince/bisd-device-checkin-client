@@ -2,7 +2,7 @@ FROM alpine:3.9 as builder
 
 ARG VERSION
 
-RUN apk add --no-cache git nodejs
+RUN apk add --no-cache git nodejs nodejs-npm
 
 RUN git clone --branch "$VERSION" --single-branch --depth 1 \
     https://github.com/korylprince/bisd-device-checkin-client.git /client
