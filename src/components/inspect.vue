@@ -226,7 +226,7 @@ export default {
             }
 
             if (this.charges.bag.missing) {
-                charges.push({description: "Missing Bag", amount: 15.0})
+                charges.push({description: "Missing Bag", amount: 40.0})
             } else if (this.charges.bag.damaged) {
                 charges.push({description: "Damaged Bag", amount: 40.0})
             }
