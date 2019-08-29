@@ -38,7 +38,7 @@
                 <v-layout row>
                     <v-flex xs8>
                         <h6 class="title">Chromebook:</h6>
-                        <v-checkbox class="charge" v-model="charges.chromebook.missing" label="Missing ($250.00)"></v-checkbox>
+                        <v-checkbox class="charge" v-model="charges.chromebook.missing" label="Missing ($275.00)"></v-checkbox>
                         <v-layout row v-show="!charges.chromebook.missing">
                             <v-flex xs6>
                                 <div class="subheading">Damage ($40.00):</div>
@@ -58,8 +58,8 @@
                     </v-flex>
                     <v-flex xs4>
                         <h6 class="title">Power Brick:</h6>
-                        <v-checkbox class="charge" v-if="!charges.power_brick.damaged" v-model="charges.power_brick.missing" label="Missing ($15.00)"></v-checkbox>
-                        <v-checkbox class="charge" v-if="!charges.power_brick.missing" v-model="charges.power_brick.damaged" label="Damaged ($15.00)"></v-checkbox>
+                        <v-checkbox class="charge" v-if="!charges.power_brick.damaged" v-model="charges.power_brick.missing" label="Missing ($25.00)"></v-checkbox>
+                        <v-checkbox class="charge" v-if="!charges.power_brick.missing" v-model="charges.power_brick.damaged" label="Damaged ($25.00)"></v-checkbox>
                         <h6 class="title">Bag:</h6>
                         <v-checkbox class="charge" v-if="!charges.bag.damaged" v-model="charges.bag.missing" label="Missing ($40.00)"></v-checkbox>
                         <v-checkbox class="charge" v-if="!charges.bag.missing" v-model="charges.bag.damaged" label="Damaged ($40.00)"></v-checkbox>
@@ -182,7 +182,7 @@ export default {
         compiled_charges() {
             const charges = []
             if (this.charges.chromebook.missing) {
-                charges.push({description: "Missing Chromebook", amount: 250.0})
+                charges.push({description: "Missing Chromebook", amount: 275.0})
             } else {
                 const damages = []
                 if (this.charges.chromebook.damages.screen) {
@@ -220,9 +220,9 @@ export default {
             }
 
             if (this.charges.power_brick.missing) {
-                charges.push({description: "Missing Power Brick", amount: 15.0})
+                charges.push({description: "Missing Power Brick", amount: 25.0})
             } else if (this.charges.power_brick.damaged) {
-                charges.push({description: "Damaged Power Brick", amount: 15.0})
+                charges.push({description: "Damaged Power Brick", amount: 25.0})
             }
 
             if (this.charges.bag.missing) {
