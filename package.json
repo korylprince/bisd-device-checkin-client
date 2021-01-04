@@ -21,7 +21,7 @@
     "author": "Kory Prince <korylprince@gmail.com>",
     "license": "BSD-2-Clause",
     "dependencies": {
-        "axios": "0.18.0",
+        "axios": "0.21.1",
         "vee-validate": "2.2.5",
         "vue": "2.6.10",
         "vue-router": "3.0.6",
